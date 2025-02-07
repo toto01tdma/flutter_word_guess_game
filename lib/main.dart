@@ -1,125 +1,83 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
+import 'dart:math'; // ใช้สำหรับการสุ่มคำศัพท์แบบสุ่ม
 
 void main() {
-  runApp(WordGameApp());
+  runApp(
+      WordGameApp()); // ฟังก์ชันหลักที่เริ่มต้นแอปพลิเคชันและเรียกใช้ WordGameApp
 }
 
 class WordGameApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Word Game',
+      title: 'Word Game', // ชื่อของแอปพลิเคชัน
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blue, // ธีมของแอปพลิเคชันใช้สีหลักเป็นสีน้ำเงิน
       ),
-      home: WordGameHomePage(),
+      home: WordGameHomePage(), // กำหนดหน้าแรกของแอปพลิเคชัน
     );
   }
 }
 
 class WordGameHomePage extends StatefulWidget {
   @override
-  _WordGameHomePageState createState() => _WordGameHomePageState();
+  _WordGameHomePageState createState() =>
+      _WordGameHomePageState(); // สร้าง State สำหรับหน้าหลัก
 }
 
 class _WordGameHomePageState extends State<WordGameHomePage> {
   final List<String> words = [
-    'APPLE',
-    'BALL',
-    'CAT',
-    'DOG',
-    'EGG',
-    'FROG',
-    'HEN',
-    'DUCK',
-    'BUNNY',
-    'TREE',
-    'MILK',
-    'BIRD',
-    'COW',
-    'CAR',
-    'BOOK',
-    'RAIN',
-    'SUN',
-    'MOON',
-    'STAR',
-    'FISH',
-    'BABY',
-    'CHAIR',
-    'TABLE',
-    'SHOE',
-    'HAND',
-    'FOOD',
-    'WATER',
-    'SHEEP',
-    'TOY',
-    'BLOCK',
-    'CAKE',
-    'BED',
-    'BOX',
-    'BAG',
-    'HAT',
-    'LAMP',
-    'JAR',
-    'CUP',
-    'BALLON',
-    'SOAP',
-    'DOLL',
-    'DOOR',
-    'KEY',
-    'PEN',
-    'PIG',
-    'BELL',
-    'BEE',
-    'GRASS',
-    'LEAF',
-    'FOOT',
-    'JUICE',
-    'MOUSE',
-    'HORSE',
-    'ZIP',
-    'NOSE'
+    // ลิสต์คำศัพท์ที่ใช้ในเกม
+    'APPLE', 'BALL', 'CAT', 'DOG', 'EGG', 'FROG', 'HEN', 'DUCK', 'BUNNY',
+    'TREE', 'MILK', 'BIRD', 'COW', 'CAR', 'BOOK', 'RAIN', 'SUN', 'MOON',
+    'STAR', 'FISH', 'BABY', 'CHAIR', 'TABLE', 'SHOE', 'HAND', 'FOOD',
+    'WATER', 'SHEEP', 'TOY', 'BLOCK', 'CAKE', 'BED', 'BOX', 'BAG', 'HAT',
+    'LAMP', 'JAR', 'CUP', 'BALLON', 'SOAP', 'DOLL', 'DOOR', 'KEY', 'PEN',
+    'PIG', 'BELL', 'BEE', 'GRASS', 'LEAF', 'FOOT', 'JUICE', 'MOUSE',
+    'HORSE', 'ZIP', 'NOSE'
   ];
-  late String currentWord;
-  late List<String> shuffledWord;
-  late List<String> userAnswer;
+  late String currentWord; // คำศัพท์ปัจจุบันที่สุ่มขึ้นมา
+  late List<String> shuffledWord; // ตัวอักษรในคำศัพท์ที่ถูกสุ่มเรียงใหม่
+  late List<String> userAnswer; // คำตอบที่ผู้ใช้จัดเรียง
 
   @override
   void initState() {
     super.initState();
-    _generateNewWord();
+    _generateNewWord(); // เรียกใช้ฟังก์ชันเพื่อสุ่มคำศัพท์เมื่อเริ่มต้น
   }
 
   void _generateNewWord() {
     setState(() {
-      currentWord = words[Random().nextInt(words.length)];
-      shuffledWord = currentWord.split('')..shuffle();
-      userAnswer = [];
+      currentWord =
+          words[Random().nextInt(words.length)]; // สุ่มคำศัพท์จากรายการ
+      shuffledWord = currentWord.split('')
+        ..shuffle(); // แยกคำศัพท์เป็นตัวอักษรและสุ่มเรียงใหม่
+      userAnswer = []; // รีเซ็ตคำตอบของผู้ใช้ให้ว่างเปล่า
     });
   }
 
   void _checkAnswer() {
     if (userAnswer.join('') == currentWord) {
+      // ตรวจสอบว่าคำตอบของผู้ใช้ตรงกับคำศัพท์หรือไม่
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text('Correct!'),
+          title: Text('Correct!'), // แสดงข้อความ "Correct!" หากคำตอบถูกต้อง
           content: Text('You arranged the word correctly!'),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
-                _generateNewWord();
+                Navigator.of(context).pop(); // ปิด Dialog
+                _generateNewWord(); // สุ่มคำใหม่
               },
-              child: Text('Next'),
+              child: Text('Next'), // ปุ่มสำหรับไปยังคำใหม่
             ),
           ],
         ),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Try again!')),
+        SnackBar(content: Text('Try again!')), // แสดงข้อความหากคำตอบผิด
       );
     }
   }
@@ -128,44 +86,52 @@ class _WordGameHomePageState extends State<WordGameHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Word Game'),
+        title: Text('Word Game'), // ชื่อใน AppBar
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment:
+              MainAxisAlignment.center, // จัดเรียง Widgets ให้อยู่กึ่งกลาง
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'Arrange the letters to form the word:',
+              'Arrange the letters to form the word:', // ข้อความนำสำหรับเกม
               style: TextStyle(fontSize: 18),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 20), // ระยะห่างระหว่างข้อความและตัวอักษร
             Wrap(
-              spacing: 10,
+              spacing: 10, // ระยะห่างระหว่างตัวอักษร
               children: shuffledWord.map((letter) {
+                // แสดงตัวอักษรที่สุ่มเรียง
                 return Draggable<String>(
-                  data: letter,
-                  child: _buildLetterTile(letter),
-                  feedback: _buildLetterTile(letter, dragging: true),
-                  childWhenDragging: _buildLetterTile('', empty: true),
+                  data: letter, // กำหนดข้อมูลเป็นตัวอักษร
+                  child: _buildLetterTile(letter), // แสดงตัวอักษร
+                  feedback: _buildLetterTile(letter,
+                      dragging: true), // แสดงตัวอักษรขณะลาก
+                  childWhenDragging:
+                      _buildLetterTile('', empty: true), // ช่องว่างขณะลาก
                 );
               }).toList(),
             ),
             SizedBox(height: 40),
             Wrap(
-              spacing: 10,
+              spacing: 10, // ระยะห่างระหว่างช่องคำตอบ
               children: List.generate(currentWord.length, (index) {
                 return DragTarget<String>(
                   onAccept: (receivedLetter) {
                     setState(() {
-                      userAnswer.add(receivedLetter);
-                      shuffledWord.remove(receivedLetter);
+                      userAnswer.add(receivedLetter); // เพิ่มตัวอักษรลงในคำตอบ
+                      shuffledWord
+                          .remove(receivedLetter); // ลบตัวอักษรออกจากตัวเลือก
                     });
                   },
                   builder: (context, candidateData, rejectedData) {
                     return _buildLetterTile(
-                      userAnswer.length > index ? userAnswer[index] : '',
-                      empty: userAnswer.length <= index,
+                      userAnswer.length > index
+                          ? userAnswer[index]
+                          : '', // แสดงตัวอักษรที่ผู้ใช้เลือก
+                      empty: userAnswer.length <=
+                          index, // ช่องว่างหากยังไม่มีตัวอักษร
                     );
                   },
                 );
@@ -173,20 +139,21 @@ class _WordGameHomePageState extends State<WordGameHomePage> {
             ),
             SizedBox(height: 40),
             ElevatedButton(
-              onPressed: _checkAnswer,
-              child: Text('Check Answer'),
+              onPressed: _checkAnswer, // ตรวจสอบคำตอบเมื่อกดปุ่ม
+              child: Text('Check Answer'), // ข้อความในปุ่ม
             ),
             SizedBox(height: 20),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment:
+                  MainAxisAlignment.center, // จัดปุ่มให้อยู่กึ่งกลาง
               children: [
                 ElevatedButton(
-                  onPressed: _resetGame, // ฟังก์ชันสำหรับ Reset
+                  onPressed: _resetGame, // ฟังก์ชันสำหรับ Reset เกม
                   child: Text('Reset'),
                 ),
                 SizedBox(width: 20),
                 ElevatedButton(
-                  onPressed: _shuffleCurrentWord, // ฟังก์ชันสำหรับสุ่มใหม่
+                  onPressed: _shuffleCurrentWord, // ฟังก์ชันสำหรับสุ่มคำใหม่
                   child: Text('Shuffle Word'),
                 ),
               ],
@@ -206,11 +173,11 @@ class _WordGameHomePageState extends State<WordGameHomePage> {
     });
   }
 
-  /// ฟังก์ชันสำหรับสุ่มใหม่
+  /// ฟังก์ชันสำหรับสุ่มเรียงตัวอักษรใหม่
   void _shuffleCurrentWord() {
     setState(() {
-      shuffledWord.shuffle();
-      userAnswer = [];
+      shuffledWord.shuffle(); // สุ่มตำแหน่งตัวอักษรใหม่
+      userAnswer = []; // รีเซ็ตคำตอบของผู้ใช้
     });
   }
 
@@ -222,18 +189,18 @@ class _WordGameHomePageState extends State<WordGameHomePage> {
       alignment: Alignment.center,
       decoration: BoxDecoration(
         color: empty
-            ? Colors.grey[300]
+            ? Colors.grey[300] // สีเทาอ่อนสำหรับช่องว่าง
             : dragging
-                ? Colors.blue.withOpacity(0.7)
-                : Colors.blue,
-        borderRadius: BorderRadius.circular(10),
+                ? Colors.blue.withOpacity(0.7) // สีฟ้าจางขณะลาก
+                : Colors.blue, // สีฟ้าสำหรับตัวอักษรปกติ
+        borderRadius: BorderRadius.circular(10), // มุมโค้งของ Tile
       ),
       child: Text(
-        letter,
+        letter, // ตัวอักษรที่จะแสดง
         style: TextStyle(
-          fontSize: 24,
-          color: empty ? Colors.grey : Colors.white,
-          fontWeight: FontWeight.bold,
+          fontSize: 24, // ขนาดตัวอักษร
+          color: empty ? Colors.grey : Colors.white, // สีตัวอักษร
+          fontWeight: FontWeight.bold, // ความหนาของตัวอักษร
         ),
       ),
     );
