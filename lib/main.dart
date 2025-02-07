@@ -200,8 +200,9 @@ class _WordGameHomePageState extends State<WordGameHomePage> {
   /// ฟังก์ชันสำหรับ Reset เกม
   void _resetGame() {
     setState(() {
-      userAnswer = [];
-      _generateNewWord();
+      shuffledWord = currentWord.split('')
+        ..shuffle(); // สุ่มตัวอักษรใหม่จากคำเดิม
+      userAnswer = []; // เคลียร์คำตอบของผู้ใช้
     });
   }
 
