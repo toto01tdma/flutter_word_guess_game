@@ -75,10 +75,9 @@ class _WordGameHomePageState extends State<WordGameHomePage> {
         title: Text('Word Game'),
       ),
       body: Center(
-        // ใช้ Center เพื่อจัดทุกอย่างให้อยู่ตรงกลาง
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center, // จัดตรงกลางแนวตั้ง
-          crossAxisAlignment: CrossAxisAlignment.center, // จัดตรงกลางแนวนอน
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               'Arrange the letters to form the word:',
@@ -121,10 +120,41 @@ class _WordGameHomePageState extends State<WordGameHomePage> {
               onPressed: _checkAnswer,
               child: Text('Check Answer'),
             ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: _resetGame, // ฟังก์ชันสำหรับ Reset
+                  child: Text('Reset'),
+                ),
+                SizedBox(width: 20),
+                ElevatedButton(
+                  onPressed: _shuffleCurrentWord, // ฟังก์ชันสำหรับสุ่มใหม่
+                  child: Text('Shuffle Word'),
+                ),
+              ],
+            ),
           ],
         ),
       ),
     );
+  }
+
+  /// ฟังก์ชันสำหรับ Reset เกม
+  void _resetGame() {
+    setState(() {
+      userAnswer = [];
+      _generateNewWord();
+    });
+  }
+
+  /// ฟังก์ชันสำหรับสุ่มใหม่
+  void _shuffleCurrentWord() {
+    setState(() {
+      shuffledWord.shuffle();
+      userAnswer = [];
+    });
   }
 
   Widget _buildLetterTile(String letter,
