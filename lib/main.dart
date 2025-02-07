@@ -74,51 +74,55 @@ class _WordGameHomePageState extends State<WordGameHomePage> {
       appBar: AppBar(
         title: Text('Word Game'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Arrange the letters to form the word:',
-            style: TextStyle(fontSize: 18),
-          ),
-          SizedBox(height: 20),
-          Wrap(
-            spacing: 10,
-            children: shuffledWord.map((letter) {
-              return Draggable<String>(
-                data: letter,
-                child: _buildLetterTile(letter),
-                feedback: _buildLetterTile(letter, dragging: true),
-                childWhenDragging: _buildLetterTile('', empty: true),
-              );
-            }).toList(),
-          ),
-          SizedBox(height: 40),
-          Wrap(
-            spacing: 10,
-            children: List.generate(currentWord.length, (index) {
-              return DragTarget<String>(
-                onAccept: (receivedLetter) {
-                  setState(() {
-                    userAnswer.add(receivedLetter);
-                    shuffledWord.remove(receivedLetter);
-                  });
-                },
-                builder: (context, candidateData, rejectedData) {
-                  return _buildLetterTile(
-                    userAnswer.length > index ? userAnswer[index] : '',
-                    empty: userAnswer.length <= index,
-                  );
-                },
-              );
-            }),
-          ),
-          SizedBox(height: 40),
-          ElevatedButton(
-            onPressed: _checkAnswer,
-            child: Text('Check Answer'),
-          ),
-        ],
+      body: Center(
+        // ใช้ Center เพื่อจัดทุกอย่างให้อยู่ตรงกลาง
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center, // จัดตรงกลางแนวตั้ง
+          crossAxisAlignment: CrossAxisAlignment.center, // จัดตรงกลางแนวนอน
+          children: [
+            Text(
+              'Arrange the letters to form the word:',
+              style: TextStyle(fontSize: 18),
+            ),
+            SizedBox(height: 20),
+            Wrap(
+              spacing: 10,
+              children: shuffledWord.map((letter) {
+                return Draggable<String>(
+                  data: letter,
+                  child: _buildLetterTile(letter),
+                  feedback: _buildLetterTile(letter, dragging: true),
+                  childWhenDragging: _buildLetterTile('', empty: true),
+                );
+              }).toList(),
+            ),
+            SizedBox(height: 40),
+            Wrap(
+              spacing: 10,
+              children: List.generate(currentWord.length, (index) {
+                return DragTarget<String>(
+                  onAccept: (receivedLetter) {
+                    setState(() {
+                      userAnswer.add(receivedLetter);
+                      shuffledWord.remove(receivedLetter);
+                    });
+                  },
+                  builder: (context, candidateData, rejectedData) {
+                    return _buildLetterTile(
+                      userAnswer.length > index ? userAnswer[index] : '',
+                      empty: userAnswer.length <= index,
+                    );
+                  },
+                );
+              }),
+            ),
+            SizedBox(height: 40),
+            ElevatedButton(
+              onPressed: _checkAnswer,
+              child: Text('Check Answer'),
+            ),
+          ],
+        ),
       ),
     );
   }
